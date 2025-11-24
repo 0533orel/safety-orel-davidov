@@ -1,73 +1,57 @@
-# React + TypeScript + Vite
+# safety-orel-davidov
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## What the code does
+- Boots a minimal React single-page application using Vite.
+- Uses TypeScript (strict settings) for all source files in src/.
+- Uses a flat ESLint config for JavaScript/TypeScript and React rules.
+- Entry point: src/main.tsx. Main example component: src/App.tsx.
+- Vite plugin: @vitejs/plugin-react (configured in vite.config.ts).
+- Public asset: public/vite.svg. HTML entry: index.html (currently lang="he" dir="rtl").
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## How to use
+1. Clone the repo:
+```bash
+git clone https://github.com/0533orel/safety-orel-davidov.git
+cd safety-orel-davidov
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. Install dependencies:
+```bash
+npm install
 ```
+
+3. Run development server (HMR):
+```bash
+npm run dev
+# open the URL shown by Vite (usually http://localhost:5173)
+```
+
+4. Build production bundle:
+```bash
+npm run build
+# runs: tsc -b && vite build
+```
+
+5. Preview production build locally:
+```bash
+npm run preview
+```
+
+6. Run linter:
+```bash
+npm run lint
+```
+
+## Files to know
+- index.html — HTML shell (loads /src/main.tsx)
+- src/main.tsx — app entry
+- src/App.tsx — example component
+- src/App.css — example styles
+- vite.config.ts — Vite config (React plugin)
+- tsconfig.app.json, tsconfig.node.json, tsconfig.json — TypeScript configs
+- eslint.config.js — ESLint flat config
+- package.json — scripts and dependencies
+
+Notes:
+- Change index.html lang/dir if the app language/direction is not Hebrew/RTL.
+- For type-aware ESLint rules, update eslint.config.js to enable parserOptions.project and point to tsconfig files.
