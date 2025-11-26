@@ -1,5 +1,7 @@
 
 export interface SafetyEvent {
+    id: string;
+    createdAt: number;
     unitName: string;
     description: string;
     eventDate: string;
@@ -12,4 +14,5 @@ export interface SafetyEvent {
     weather: string;
     eventSeverity: string;
     recommendations: string;
+    coordinates?: string;
 }
