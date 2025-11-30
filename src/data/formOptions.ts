@@ -1,5 +1,4 @@
 export const unitActivityTypeArr: string[] = [
-
     'תע"ם',
     "אימונים",
     "הכשרה",
@@ -8,7 +7,6 @@ export const unitActivityTypeArr: string[] = [
 ];
 
 export const personalActivityTypeArr: string[] = [
-
     "פעילות מבצעית/לחימה",
     "אימון",
     "הכשרה",
@@ -18,7 +16,6 @@ export const personalActivityTypeArr: string[] = [
 ];
 
 export const categoryArr: string[] = [
-
     "נשק ומקלעים",
     "דרכים",
     "תחמושת",
@@ -47,7 +44,6 @@ export const locationArr: string[] = ["בסיס", "שטח אזרחי", "שטח �
 export const eventSeverityArr: string[] = ["קל", "בינוני", "חמור"];
 
 export const resultsArr: string[] = [
-
     `א.נ.א.נ (אין נפגעים, אין נזק) `,
     `א.נ.י.נ (אין נפגעים, יש נזק) `,
     `י.נ.א.נ (יש נפגעים, אין נזק) `,
@@ -55,7 +51,6 @@ export const resultsArr: string[] = [
 ];
 
 export const injuriesLevelArr: string[] = [
-
     "ללא פגיעה",
     "פגוע קל (ללא אשפוז)",
     "פגוע קל (שאושפז)",
@@ -65,7 +60,6 @@ export const injuriesLevelArr: string[] = [
 ];
 
 export const weatherArr: string[] = [
-
     "שרב/עומס חום",
     "שלג",
     "סופת חול",
@@ -79,3 +73,6 @@ export const weatherArr: string[] = [
     "ים סוער",
     "מים שקטים",
 ]
+
+export const HAS_CASUALTIES = "יש נפגעים";
+export const CIVILIAN_AREA = "שטח אזרחי";

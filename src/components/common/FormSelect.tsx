@@ -30,7 +30,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
                                                    value,
                                                    options,
                                                    onChange,
-                                                   required = true,
+                                                   required = false,
                                                    fullWidth=true,
                                                    disabled,
                                                    error,

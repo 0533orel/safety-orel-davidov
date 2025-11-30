@@ -6,6 +6,7 @@ import { Box, Container } from '@mui/material';
 import Header from '../src/components/Header';
 import Footer from '../src/components/Footer';
 import SafetyForm from '../src/components/SafetyForm';
+import EventsTable from "./components/eventsTable/EventsTable.tsx";
 
 function App() {
     const [mode, setMode] = useState<'light' | 'dark'>('dark');
@@ -48,7 +49,6 @@ function App() {
                 <Header mode={mode} onToggleTheme={toggleColorMode} />
 
                 <Container component="main" maxWidth="md" sx={{ mt: 4, mb: 4, flexGrow: 1 }}>
-
                     <Box
                         sx={{
                             bgcolor: mode === 'dark' ? 'rgba(18,18,18,0.83)' : 'background.paper',
@@ -59,9 +59,9 @@ function App() {
                     >
                         <SafetyForm />
                     </Box>
-
-
                 </Container>
+
+                <EventsTable/>
 
                 <Footer />
             </Box>

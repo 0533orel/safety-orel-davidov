@@ -31,7 +31,7 @@ const FormInput: React.FC<FormInputProps> = ({
                                                  onChange,
                                                  type = "text",
                                                  multiline = false,
-                                                 required = true,
+                                                 required = false,
                                                  rows,
                                                  maxLength,
                                                  max,

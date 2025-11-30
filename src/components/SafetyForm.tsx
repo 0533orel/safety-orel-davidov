@@ -81,7 +81,6 @@ const SafetyForm: React.FC = () => {
                 value={formData.result}
                 options={resultsArr}
                 onChange={handleChange}
-                required
             />
 
             {checkIfHasCasualties(formData.result) && (
@@ -100,7 +99,6 @@ const SafetyForm: React.FC = () => {
                 value={formData.unitActivity}
                 options={unitActivityTypeArr}
                 onChange={handleChange}
-                required
             />
 
             <FormSelect
@@ -109,7 +107,6 @@ const SafetyForm: React.FC = () => {
                 value={formData.personalActivity}
                 options={personalActivityTypeArr}
                 onChange={handleChange}
-                required
             />
 
             <FormSelect
@@ -118,7 +115,6 @@ const SafetyForm: React.FC = () => {
                 value={formData.category}
                 options={categoryArr}
                 onChange={handleChange}
-                required
             />
 
             <FormSelect
@@ -127,7 +123,8 @@ const SafetyForm: React.FC = () => {
                 value={formData.weather}
                 options={weatherArr}
                 onChange={handleChange}
-                required
+                required={false}
+
             />
 
             <FormSelect
@@ -136,7 +133,6 @@ const SafetyForm: React.FC = () => {
                 value={formData.eventSeverity}
                 options={eventSeverityArr}
                 onChange={handleChange}
-                required
             />
 
             <FormInput
@@ -147,6 +143,7 @@ const SafetyForm: React.FC = () => {
                 multiline
                 rows={4}
                 maxLength={800}
+                required={false}
             />
 
 
