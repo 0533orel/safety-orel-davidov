@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField } from '@mui/material';
+import { TextField, type Theme } from '@mui/material';
 
 interface FormInputProps {
     name: string;
@@ -13,7 +13,7 @@ interface FormInputProps {
     max?: string;
     placeholder?: string;
     required?: boolean;
-    fullWidth?: boolean
+    fullWidth?: boolean;
     min?: string;
     disabled?: boolean;
     readOnly?: boolean;
@@ -31,7 +31,7 @@ const FormInput: React.FC<FormInputProps> = ({
                                                  onChange,
                                                  type = "text",
                                                  multiline = false,
-                                                 required = false,
+                                                 required = true,
                                                  rows,
                                                  maxLength,
                                                  max,
@@ -46,6 +46,20 @@ const FormInput: React.FC<FormInputProps> = ({
                                                  labelSx,
                                                  inputSx,
                                              }) => {
+
+    const handleInputClick = (e: React.MouseEvent<HTMLInputElement>) => {
+        if (type === 'date' || type === 'time' || type === 'datetime-local') {
+            const input = e.currentTarget;
+            if ('showPicker' in input) {
+                try {
+                    input.showPicker();
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        }
+    };
+
     return (
         <TextField
             variant="outlined"
@@ -63,17 +77,24 @@ const FormInput: React.FC<FormInputProps> = ({
             disabled={disabled}
             helperText={helperText}
             error={error}
-            sx={sx}
+            sx={{
+                ...sx,
+                '& ::-webkit-calendar-picker-indicator': {
+                    filter: (theme: Theme) => theme.palette.mode === 'dark' ? 'invert(1)' : 'none',
+                    cursor: 'pointer'
+                }
+            }}
             slotProps={{
                 htmlInput: {
                     maxLength: maxLength,
                     max: max,
                     min: min,
                     readOnly: readOnly,
+                    onClick: handleInputClick,
                     ...(inputSx ? { sx: inputSx } : {}),
                 },
                 inputLabel: {
-                    shrink: type === 'datetime-local' ? true : undefined,
+                    shrink: type === 'date' || type === 'time' || type === 'datetime-local' ? true : undefined,
                     ...(labelSx ? { sx: labelSx } : {}),
                 },
             }}

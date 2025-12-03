@@ -7,7 +7,6 @@ const Footer: React.FC = () => {
         <Box
             component="footer"
             sx={{
-                py: 3,
                 px: 20,
                 mt: 'auto',
                 backgroundColor: (theme) =>

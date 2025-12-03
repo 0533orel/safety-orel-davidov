@@ -2,7 +2,9 @@ import {useState} from "react";
 import type {SafetyEvent} from "../types/safetyEvent.ts";
 import * as React from "react";
 import type { SelectChangeEvent } from "@mui/material";
-import { useSafetyEvents } from "../context/SafetyContext";
+import { validateSafetyFormStep, type ValidationErrors } from "../utils/validation";
+import {useSafetyEvents} from "../context/safetyContext/useSafetyEvents.ts";
+
 
 const INITIAL_STATE: SafetyEvent = {
     id: "",
@@ -10,6 +12,7 @@ const INITIAL_STATE: SafetyEvent = {
     unitName: "",
     description: "",
     eventDate: "",
+    eventTime: "",
     location: "",
     result: "",
     injurySeverity: "",
@@ -24,7 +27,7 @@ const INITIAL_STATE: SafetyEvent = {
 
 export const useSafetyForm = () => {
     const [formData, setFormData] = useState<SafetyEvent>(INITIAL_STATE);
-
+    const [errors, setErrors] = useState<ValidationErrors>({});
     const {addEvent} = useSafetyEvents();
 
     const handleChange = (
@@ -36,6 +39,20 @@ export const useSafetyForm = () => {
             ...prev,
             [name]: value,
         }));
+
+        if (errors[name as keyof SafetyEvent]) {
+            setErrors((prev) => ({
+                ...prev,
+                [name]: undefined
+            }));
+        }
+    };
+
+    const validateStep = (step: number): boolean => {
+        const newErrors = validateSafetyFormStep(step, formData);
+        setErrors(newErrors);
+
+        return Object.keys(newErrors).length === 0;
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -57,7 +74,9 @@ export const useSafetyForm = () => {
 
     return {
         formData,
+        errors,
         handleChange,
-        handleSubmit
+        handleSubmit,
+        validateStep
     };
 };
