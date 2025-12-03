@@ -1,5 +1,4 @@
-export const unitActivityTypeArr :string[] = [
-    "בחר/י",
+export const unitActivityTypeArr: string[] = [
     'תע"ם',
     "אימונים",
     "הכשרה",
@@ -7,8 +6,7 @@ export const unitActivityTypeArr :string[] = [
     "מלחמה/מבצע צבאי נרחב",
 ];
 
-export const personalActivityTypeArr :string[] = [
-    "בחר/י",
+export const personalActivityTypeArr: string[] = [
     "פעילות מבצעית/לחימה",
     "אימון",
     "הכשרה",
@@ -17,8 +15,7 @@ export const personalActivityTypeArr :string[] = [
     "חופשה",
 ];
 
-export const categoryArr :string[] = [
-    "בחר/י",
+export const categoryArr: string[] = [
     "נשק ומקלעים",
     "דרכים",
     "תחמושת",
@@ -42,20 +39,18 @@ export const categoryArr :string[] = [
     "כושר גופני/קרבי",
 ];
 
-export const locationArr :string[] = ["בחר/י", "בסיס", "שטח אזרחי", "שטח אש", "רציף"];
+export const locationArr: string[] = ["בסיס", "שטח אזרחי", "שטח אש", "רציף"];
 
-export const eventSeverityArr :string[] = ["בחר/י", "קל", "בינוני", "חמור"];
+export const eventSeverityArr: string[] = ["קל", "בינוני", "חמור"];
 
-export const resultsArr :string[] = [
-    "בחר/י",
+export const resultsArr: string[] = [
     `א.נ.א.נ (אין נפגעים, אין נזק) `,
     `א.נ.י.נ (אין נפגעים, יש נזק) `,
     `י.נ.א.נ (יש נפגעים, אין נזק) `,
     `י.נ.י.נ (יש נפגעים, יש נזק) `,
 ];
 
-export const injuriesLevelArr :string[] = [
-    "בחר/י",
+export const injuriesLevelArr: string[] = [
     "ללא פגיעה",
     "פגוע קל (ללא אשפוז)",
     "פגוע קל (שאושפז)",
@@ -64,8 +59,7 @@ export const injuriesLevelArr :string[] = [
     "חלל",
 ];
 
-export const weatherArr :string[] = [
-    "בחר/י",
+export const weatherArr: string[] = [
     "שרב/עומס חום",
     "שלג",
     "סופת חול",
@@ -79,3 +73,6 @@ export const weatherArr :string[] = [
     "ים סוער",
     "מים שקטים",
 ]
+
+export const HAS_CASUALTIES = "יש נפגעים";
+export const CIVILIAN_AREA = "שטח אזרחי";

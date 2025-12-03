@@ -1,11 +1,27 @@
-import "./footer.css"
+import React from 'react';
+import {Box, Typography} from '@mui/material';
 
-function Footer(){
-    return(
-        <footer>
-            <p>{new Date().getFullYear()} &copy; אוראל דוידוב</p>
-        </footer>
-    )
-}
+
+const Footer: React.FC = () => {
+    return (
+        <Box
+            component="footer"
+            sx={{
+                px: 20,
+                mt: 'auto',
+                backgroundColor: (theme) =>
+                    theme.palette.mode === 'light' ?
+                        theme.palette.grey[300] :
+                        theme.palette.grey[800],
+                textAlign: 'center'
+            }}
+        >
+            <Typography variant='caption' color='text.secondary' display='block' sx={{mt: 1}}>
+                {new Date().getFullYear()} &copy; אוראל דוידוב
+            </Typography>
+        </Box>
+    );
+};
+
 
 export default Footer

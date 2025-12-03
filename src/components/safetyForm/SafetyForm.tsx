@@ -1,203 +1,102 @@
-import {
-    locationArr,
-    resultsArr,
-    injuriesLevelArr,
-    categoryArr,
-    personalActivityTypeArr,
-    weatherArr,
-    unitActivityTypeArr,
-    eventSeverityArr,
-} from "../../data/formOptions.ts";
-import * as React from "react";
-import {
-    renderOptions,
-    maxEventDate,
-    checkIfHasCasualties
-} from "../../utils/formHelpers.tsx";
-import {useSafetyForm} from "../../hooks/useSafetyForm.ts";
+import React, { useState } from "react";
+import { Stepper, Step, StepLabel, Box, Button } from "@mui/material";
+import { useSafetyForm } from "../../hooks/useSafetyForm";
+import BasicInfoStep from "./steps/BasicInfoStep";
+import ClassificationStep from "./steps/ClassificationStep";
+import SummaryStep from "./steps/SummaryStep";
+import { type StepProps } from "../../types/formSteps"; // <---
 
+const steps = ['פרטים בסיסיים', 'סיווג ונתונים', 'סיכום ותוצאות'];
 
 const SafetyForm: React.FC = () => {
-    const {formData, handleChange, handleSubmit} = useSafetyForm();
+    const { formData, errors, handleChange, handleSubmit, validateStep } = useSafetyForm();
+    const [activeStep, setActiveStep] = useState(0);
+
+    const handleNext = () => {
+        if (validateStep(activeStep)) {
+            setActiveStep((prev) => prev + 1);
+        }
+    };
+
+    const handleBack = () => {
+        setActiveStep((prev) => prev - 1);
+    };
+
+    const onFormSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (validateStep(activeStep)) {
+            handleSubmit(e);
+            setActiveStep(0);
+        }
+    };
+
+    const renderStepContent = (step: number) => {
+        const stepProps: StepProps = { formData, handleChange, errors };
+
+        switch (step) {
+            case 0: return <BasicInfoStep {...stepProps} />;
+            case 1: return <ClassificationStep {...stepProps} />;
+            case 2: return <SummaryStep {...stepProps} />;
+            default: return null;
+        }
+    };
 
     return (
-        <form className="form-container"
-              onSubmit={handleSubmit}
-        >
-            <h2>דיווח אירוע בטיחות</h2>
-            <div className="unitName">
-                <label htmlFor="unitName">יחידות משנה</label>
-                <input
-                    type="text"
-                    id="unitName"
-                    name="unitName"
-                    value={formData.unitName}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
+        <form className="form-container" style={{ padding: '10px' }}>
+            <h2 style={{ textAlign: 'center', marginBottom: '30px', fontFamily: 'Arial, sans-serif' }}>
+                דיווח אירוע בטיחות
+            </h2>
 
-            <div className='eventDate'>
-                <label htmlFor="eventDate">תאריך ושעה</label>
-                <input
-                    type="datetime-local"
-                    id="eventDate"
-                    name="eventDate"
-                    value={formData.eventDate}
-                    onChange={handleChange}
-                    max={maxEventDate}
-                    required
-                />
-            </div>
+            <Box sx={{ width: '90%', margin: '0 auto', mb: 4 }}>
+                <Stepper activeStep={activeStep}>
+                    {steps.map((label) => (
+                        <Step key={label}>
+                            <StepLabel>{label}</StepLabel>
+                        </Step>
+                    ))}
+                </Stepper>
+            </Box>
 
+            <Box sx={{ minHeight: '300px' }}>
+                {renderStepContent(activeStep)}
+            </Box>
 
-            <div className="location">
-                <label htmlFor="location">מיקום האירוע</label>
-                <select
-                    name="location"
-                    id="location"
-                    value={formData.location}
-                    onChange={handleChange}
-                    required
+            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 4, gap: 2 }}>
+                <Button
+                    color="inherit"
+                    disabled={activeStep === 0}
+                    onClick={handleBack}
+                    variant="outlined"
+                    type="button"
                 >
-                    {renderOptions(locationArr)}
-                </select>
-            </div>
+                    חזור
+                </Button>
 
+                <Box sx={{ flex: '1 1 auto' }} />
 
-            <div className='description'>
-                <label htmlFor="description">תיאור האירוע</label>
-                <textarea
-                    name="description"
-                    id="description"
-                    value={formData.description}
-                    onChange={handleChange}
-                    maxLength={800}
-                    rows={3}
-                    placeholder='תיאור האירוע (עד 800 תווים)'
-                    required
-                />
-            </div>
-
-            <div className='result'>
-                <label htmlFor="result">תוצאות האירוע</label>
-                <select
-                    name="result"
-                    id="result"
-                    value={formData.result}
-                    onChange={handleChange}
-                    required
-                >
-                    {renderOptions(resultsArr)}
-                </select>
-            </div>
-
-            {checkIfHasCasualties(formData.result) && (
-                <div className='injurySeverity'>
-                    <label htmlFor="injurySeverity">חומרת הפגיעה</label>
-                    <select
-                        name="injurySeverity"
-                        id="injurySeverity"
-                        value={formData.injurySeverity}
-                        onChange={handleChange}
-                        required
+                {activeStep === steps.length - 1 ? (
+                    <Button
+                        onClick={onFormSubmit}
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        type="button"
                     >
-                        {renderOptions(injuriesLevelArr)}
-                    </select>
-                </div>
-            )}
-
-
-            <div className='unitActivity'>
-                <label htmlFor="unitActivity">מאפיין פעילות היחידה</label>
-                <select
-                    name="unitActivity"
-                    id="unitActivity"
-                    value={formData.unitActivity}
-                    onChange={handleChange}
-                    required
-                >
-                    {renderOptions(unitActivityTypeArr)}
-                </select>
-            </div>
-
-            <div className='personalActivity'>
-                <label htmlFor="personalActivity">מאפיין פעילות הפרט</label>
-                <select
-                    name="personalActivity"
-                    id="personalActivity"
-                    value={formData.personalActivity}
-                    onChange={handleChange}
-                    required
-                >
-                    {renderOptions(personalActivityTypeArr)}
-                </select>
-            </div>
-
-            <div className='category'>
-                <label htmlFor="category">קטגוריה</label>
-                <select
-                    name="category"
-                    id="category"
-                    value={formData.category}
-                    onChange={handleChange}
-                    required
-                >
-                    {renderOptions(categoryArr)}
-                </select>
-            </div>
-
-            <div className='weather'>
-                <label htmlFor="weather">מזג אוויר</label>
-                <select
-                    name="weather"
-                    id="weather"
-                    value={formData.weather}
-                    onChange={handleChange}
-                    required
-                >
-                    {renderOptions(weatherArr)}
-                </select>
-            </div>
-
-            <div className="eventSeverity">
-                <label htmlFor="eventSeverity">חומרת האירוע</label>
-                <select
-                    name="eventSeverity"
-                    id="eventSeverity"
-                    value={formData.eventSeverity}
-                    onChange={handleChange}
-                    required
-                >
-                    {renderOptions(eventSeverityArr)}
-                </select>
-            </div>
-
-
-            <div className='recommendations'>
-                <label htmlFor="recommendations">המלצות ראשוניות</label>
-                <textarea
-                    name="recommendations"
-                    id="recommendations"
-                    value={formData.recommendations}
-                    onChange={handleChange}
-                    maxLength={800}
-                    rows={3}
-                    placeholder='המלצות ראשוניות (עד 800 תווים)'
-                    required
-                />
-            </div>
-
-            <button
-                className="submit-btn"
-                type="submit"
-            >
-                שלח טופס
-            </button>
-
+                        שמור אירוע
+                    </Button>
+                ) : (
+                    <Button
+                        onClick={handleNext}
+                        variant="contained"
+                        color="primary"
+                        type="button"
+                    >
+                        הבא
+                    </Button>
+                )}
+            </Box>
         </form>
     );
 };
 
-
-export default SafetyForm
+export default SafetyForm;

@@ -1,19 +1,12 @@
-import './App.css'
-import Header from "./components/header/Header.tsx";
-import Footer from "./components/footer/Footer.tsx";
-import SafetyForm from "./components/safetyForm/SafetyForm.tsx";
+import { ThemeProvider } from './context/themeContext/ThemeProvider.tsx';
+import AppRoutes from './routes/AppRoutes';
 
 function App() {
-
-  return (
-    <div className="wrapper">
-        <Header/>
-        <div className='content'>
-            <SafetyForm/>
-        </div>
-        <Footer/>
-    </div>
-  )
+    return (
+        <ThemeProvider>
+            <AppRoutes />
+        </ThemeProvider>
+    );
 }
 
-export default App
+export default App;

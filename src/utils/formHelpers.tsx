@@ -1,26 +1,24 @@
-export const renderOptions = (options: string[]) => {
-    return options.map((option, index) => (
-        <option key={index} value={option}>
-            {option}
-        </option>
-    ));
+import { CIVILIAN_AREA, HAS_CASUALTIES } from "../data/formOptions";
+
+export const getCurrentDate = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const day = now.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
 };
 
-
-const formatDateTimeLocal = (date: Date) => {
-    const pad = (n: number) => n.toString().padStart(2, "0");
-    const year = date.getFullYear();
-    const month = pad(date.getMonth() + 1);
-    const day = pad(date.getDate());
-    const hours = pad(date.getHours());
-    const minutes = pad(date.getMinutes());
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
+export const getCurrentTime = () => {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
 };
-export const maxEventDate = formatDateTimeLocal(new Date());
-
 
 export const checkIfHasCasualties = (resultValue: string): boolean => {
-    return resultValue.includes('יש נפגעים');
+    return resultValue.includes(HAS_CASUALTIES);
 };
 
-
+export const checkEventVenue = (resultValue: string): boolean => {
+    return resultValue.includes(CIVILIAN_AREA);
+};
