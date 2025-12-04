@@ -41,7 +41,7 @@ const EventsTable: React.FC = () => {
     };
 
     const handleDeleteEvent = (eventId: string) => {
-        const confirmDelete = window.confirm('האם אתה בטוח שברצונך למחוק את האירוע הזה?');
+        const confirmDelete = window.confirm(`למחוק אירוע מספר ${eventId} ?`);
         if (!confirmDelete) return;
 
         deleteEvent(eventId);

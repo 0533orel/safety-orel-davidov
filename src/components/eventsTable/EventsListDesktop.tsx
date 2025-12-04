@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
     TableContainer,
     Paper,
@@ -15,59 +15,27 @@ import {
     Box,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {truncate} from '../../utils/formHelpers';
-import type {EventsListMobileTypes} from './EventsListMobileTypes';
+import { truncate } from '../../utils/formHelpers';
+import type { EventsTableTypes } from './EventsTableTypes.ts';
+import { useSelectableEvents } from '../../hooks/useSelectableEvents';
 
-const EventsListDesktop: React.FC<EventsListMobileTypes> = ({events, onViewDetails, onDelete}) => {
-    const [selectedIds, setSelectedIds] = useState<string[]>([]);
+const EventsListDesktop: React.FC<EventsTableTypes> = ({ events, onViewDetails, onDelete }) => {
+    const {
+        selectedIds,
+        allSelected,
+        someSelected,
+        toggleSelectRow,
+        toggleSelectAll,
+        deleteSelected,
+    } = useSelectableEvents(events, onDelete);
 
     if (events.length === 0) {
         return (
-            <Typography align="center" color="text.secondary" sx={{mt: 2}}>
+            <Typography align="center" color="text.secondary" sx={{ mt: 2 }}>
                 לא נמצאו אירועים תואמים.
             </Typography>
         );
     }
-
-    const allIds = events.map((e) => e.id);
-    const allSelected = selectedIds.length === events.length;
-    const someSelected = selectedIds.length > 0 && !allSelected;
-
-    const handleToggleRow = (id: string) => {
-        setSelectedIds((prev) =>
-            prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
-        );
-    };
-
-    const handleToggleAll = () => {
-        if (allSelected) {
-            setSelectedIds([]);
-        } else {
-            setSelectedIds(allIds);
-        }
-    };
-
-    const handleDeleteSelected = () => {
-        if (selectedIds.length === 0) return;
-
-        const confirmDelete = window.confirm(
-            `האם אתה בטוח שברצונך למחוק ${selectedIds.length} אירועים שנבחרו?`
-        );
-        if (!confirmDelete) return;
-
-        selectedIds.forEach((id) => onDelete(id));
-        setSelectedIds([]);
-    };
-
-    const handleDeleteAll = () => {
-        const confirmDelete = window.confirm(
-            `האם אתה בטוח שברצונך למחוק את כל ${events.length} האירועים מהטבלה?`
-        );
-        if (!confirmDelete) return;
-
-        events.forEach((event) => onDelete(event.id));
-        setSelectedIds([]);
-    };
 
     return (
         <>
@@ -84,26 +52,17 @@ const EventsListDesktop: React.FC<EventsListMobileTypes> = ({events, onViewDetai
                     color="error"
                     size="small"
                     disabled={selectedIds.length === 0}
-                    onClick={handleDeleteSelected}
+                    onClick={deleteSelected}
                 >
-                    מחק נבחרים
-                </Button>
-
-                <Button
-                    variant="outlined"
-                    color="error"
-                    size="small"
-                    onClick={handleDeleteAll}
-                >
-                    מחק כל האירועים
+                    מחק אירועים נבחרים
                 </Button>
             </Box>
 
-            <TableContainer component={Paper} elevation={3} sx={{borderRadius: 2}}>
+            <TableContainer component={Paper} elevation={3} sx={{ borderRadius: 2 }}>
                 <Table
                     sx={{
                         minWidth: 900,
-                        '& th': {fontWeight: 'bold', bgcolor: 'primary.main', color: 'white'},
+                        '& th': { fontWeight: 'bold', bgcolor: 'primary.main', color: 'white' },
                         '& th, & td': {
                             textAlign: 'center',
                             border: '1px solid',
@@ -118,7 +77,7 @@ const EventsListDesktop: React.FC<EventsListMobileTypes> = ({events, onViewDetai
                                 <Checkbox
                                     checked={allSelected}
                                     indeterminate={someSelected}
-                                    onChange={handleToggleAll}
+                                    onChange={toggleSelectAll}
                                     sx={{
                                         color: (theme) => theme.palette.primary.contrastText,
                                         '&.Mui-checked': {
@@ -151,14 +110,14 @@ const EventsListDesktop: React.FC<EventsListMobileTypes> = ({events, onViewDetai
                                     <TableCell padding="checkbox">
                                         <Checkbox
                                             checked={isSelected}
-                                            onChange={() => handleToggleRow(event.id)}
+                                            onChange={() => toggleSelectRow(event.id)}
                                         />
                                         <Tooltip title="מחק אירוע">
                                             <IconButton
-                                                sx={{color: 'orangered'}}
+                                                sx={{ color: 'orangered' }}
                                                 onClick={() => onDelete(event.id)}
                                             >
-                                                <DeleteIcon/>
+                                                <DeleteIcon />
                                             </IconButton>
                                         </Tooltip>
                                     </TableCell>

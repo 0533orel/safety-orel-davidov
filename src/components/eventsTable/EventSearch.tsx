@@ -1,13 +1,10 @@
 import React from 'react';
 import { Box, TextField, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import type {EventSearchTypes} from "./EventsTableTypes.ts";
 
-interface EventSearchProps {
-    value: string;
-    onChange: (value: string) => void;
-}
 
-const EventSearch: React.FC<EventSearchProps> = ({ value, onChange }) => {
+const EventSearch: React.FC<EventSearchTypes> = ({ value, onChange }) => {
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
             <TextField
