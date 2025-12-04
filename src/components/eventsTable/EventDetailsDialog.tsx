@@ -3,15 +3,10 @@ import {
     Dialog, DialogTitle, DialogContent, DialogActions,
     Button, Stack, Typography
 } from '@mui/material';
-import { type SafetyEvent } from '../../types/safetyEvent';
+import type {EventDetailsDialogTypes} from "./EventsTableTypes.ts";
 
-interface EventDetailsDialogProps {
-    open: boolean;
-    onClose: () => void;
-    event: SafetyEvent | null;
-}
 
-const EventDetailsDialog: React.FC<EventDetailsDialogProps> = ({ open, onClose, event }) => {
+const EventDetailsDialog: React.FC<EventDetailsDialogTypes> = ({ open, onClose, event }) => {
     if (!event) return null;
 
     return (
