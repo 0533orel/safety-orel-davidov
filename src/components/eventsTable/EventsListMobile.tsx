@@ -1,53 +1,134 @@
-import React from 'react';
-import { Stack, Card, CardContent, Typography, CardActions, Button } from '@mui/material';
-import { type SafetyEvent } from '../../types/safetyEvent';
+import React, { useState } from 'react';
+import {
+    Stack, Card, CardContent, Typography, CardActions,
+    Button, IconButton, Tooltip, Checkbox, Box
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { truncate } from '../../utils/formHelpers';
+import type { EventsListMobileTypes } from './EventsListMobileTypes';
 
-interface EventsListMobileProps {
-    events: SafetyEvent[];
-    onViewDetails: (event: SafetyEvent) => void;
-}
-
-const EventsListMobile: React.FC<EventsListMobileProps> = ({ events, onViewDetails }) => {
-
-    const truncate = (text: string | undefined, max: number = 80) => {
-        if (!text) return '';
-        return text.length > max ? text.slice(0, max) + '...' : text;
-    };
+const EventsListMobile: React.FC<EventsListMobileTypes> = ({ events, onViewDetails, onDelete }) => {
+    const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
     if (events.length === 0) {
         return (
-            <Typography align="center" color="text.secondary">
+            <Typography align="center" color="text.secondary" sx={{ mt: 2 }}>
                 לא נמצאו אירועים תואמים.
             </Typography>
         );
     }
 
+    const allIds = events.map(e => e.id);
+    const allSelected = selectedIds.length === events.length;
+    const someSelected = selectedIds.length > 0 && !allSelected;
+
+    const toggleSelectRow = (id: string) => {
+        setSelectedIds(prev =>
+            prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+        );
+    };
+
+    const toggleSelectAll = () => {
+        setSelectedIds(allSelected ? [] : allIds);
+    };
+
+    const handleDeleteSelected = () => {
+        if (selectedIds.length === 0) return;
+        const ok = confirm(`למחוק ${selectedIds.length} אירועים נבחרים?`);
+        if (!ok) return;
+
+        selectedIds.forEach(id => onDelete(id));
+        setSelectedIds([]);
+    };
+
+    const handleDeleteAll = () => {
+        const ok = confirm(`למחוק את כל האירועים (${events.length})?`);
+        if (!ok) return;
+
+        events.forEach(event => onDelete(event.id));
+        setSelectedIds([]);
+    };
+
     return (
-        <Stack spacing={2}>
-            {events.map((event) => (
-                <Card key={event.id} sx={{ borderRadius: 2, boxShadow: 3 }}>
-                    <CardContent>
-                        <Typography variant="subtitle2" color="text.secondary">
-                            אירוע #{event.id}
-                        </Typography>
-                        <Typography variant="body2">
-                            <strong>מועד האירוע:</strong> {event.eventDate} {event.eventTime}
-                        </Typography>
-                        <Typography variant="body2"><strong>יחידה:</strong> {event.unitName}</Typography>
-                        <Typography variant="body2"><strong>מיקום:</strong> {event.location}</Typography>
-                        <Typography variant="body2"><strong>חומרה:</strong> {event.eventSeverity}</Typography>
-                        <Typography variant="body2" sx={{ mt: 1 }}>
-                            <strong>תיאור:</strong> {truncate(event.description)}
-                        </Typography>
-                    </CardContent>
-                    <CardActions sx={{ justifyContent: 'flex-end', pr: 2, pb: 2 }}>
-                        <Button size="small" variant="outlined" onClick={() => onViewDetails(event)}>
-                            פרטים
-                        </Button>
-                    </CardActions>
-                </Card>
-            ))}
-        </Stack>
+        <>
+            <Box display="flex" justifyContent="flex-end" gap={1} mb={1}>
+                <Button
+                    variant="outlined"
+                    color="error"
+                    size="small"
+                    disabled={selectedIds.length === 0}
+                    onClick={handleDeleteSelected}
+                >
+                    מחק נבחרים
+                </Button>
+
+                <Button
+                    variant="outlined"
+                    color="error"
+                    size="small"
+                    onClick={handleDeleteAll}
+                >
+                    מחק הכל
+                </Button>
+
+                <Checkbox
+                    checked={allSelected}
+                    indeterminate={someSelected}
+                    onChange={toggleSelectAll}
+                    sx={{ alignSelf: 'center' }}
+                />
+            </Box>
+
+            <Stack spacing={2}>
+                {events.map((event) => {
+                    const checked = selectedIds.includes(event.id);
+
+                    return (
+                        <Card key={event.id} sx={{ borderRadius: 2, boxShadow: 3, position: 'relative' }}>
+
+                            <Checkbox
+                                checked={checked}
+                                onChange={() => toggleSelectRow(event.id)}
+                                sx={{ position: 'absolute', top: 4, left: 4 }}
+                            />
+
+                            <Tooltip title="מחק אירוע">
+                                <IconButton
+                                    sx={{
+                                        position: 'absolute',
+                                        top: 40,
+                                        left: 4,
+                                        color: 'darkred'
+                                    }}
+                                    onClick={() => onDelete(event.id)}
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
+                            </Tooltip>
+
+                            <CardContent>
+                                <Typography variant="subtitle2" color="text.secondary">
+                                    אירוע #{event.id}
+                                </Typography>
+                                <Typography variant="body2"><strong>מועד:</strong> {event.eventDate} {event.eventTime}</Typography>
+                                <Typography variant="body2"><strong>יחידה:</strong> {event.unitName}</Typography>
+                                <Typography variant="body2"><strong>מיקום:</strong> {event.location}</Typography>
+                                <Typography variant="body2"><strong>חומרה:</strong> {event.eventSeverity}</Typography>
+                                <Typography variant="body2" sx={{ mt: 1 }}>
+                                    <strong>תיאור:</strong> {truncate(event.description)}
+                                </Typography>
+                            </CardContent>
+
+                            <CardActions sx={{ justifyContent: 'flex-end' }}>
+                                <Button size="small" variant="outlined" onClick={() => onViewDetails(event)}>
+                                    פרטים
+                                </Button>
+                            </CardActions>
+                        </Card>
+                    );
+                })}
+            </Stack>
+        </>
     );
 };
 

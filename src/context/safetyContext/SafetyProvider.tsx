@@ -26,13 +26,17 @@ export const SafetyProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         setEvents((prevEvents) => [newEvent, ...prevEvents])
     }
 
+    const deleteEvent = (id: string) => {
+        setEvents((prevEvents) => prevEvents.filter(event => event.id !== id));
+    };
+
     const clearEvents = () => {
         setEvents([])
         localStorage.removeItem(STORAGE_KEY)
     }
 
     return(
-        <SafetyContext.Provider value={{events, addEvent, clearEvents}}>
+        <SafetyContext.Provider value={{events, addEvent, clearEvents, deleteEvent}}>
             {children}
         </SafetyContext.Provider>
     )

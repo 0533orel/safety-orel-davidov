@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Stepper, Step, StepLabel, Box, Button } from "@mui/material";
+import { Typography,Stepper, Step, StepLabel, Box, Button } from "@mui/material";
 import { useSafetyForm } from "../../hooks/useSafetyForm";
 import BasicInfoStep from "./steps/BasicInfoStep";
 import ClassificationStep from "./steps/ClassificationStep";
@@ -42,14 +42,40 @@ const SafetyForm: React.FC = () => {
     };
 
     return (
-        <form className="form-container" style={{ padding: '10px' }}>
-            <h2 style={{ textAlign: 'center', marginBottom: '30px', fontFamily: 'Arial, sans-serif' }}>
+        <Box
+            component="form"
+            className="form-container"
+            sx={{ p: 2 }}
+        >
+            <Typography
+                variant="h4"
+                component="h2"
+                sx={{ textAlign: 'center', mb: 4, fontFamily: 'Arial, sans-serif' }}
+            >
                 דיווח אירוע בטיחות
-            </h2>
+            </Typography>
 
-            <Box sx={{ width: '90%', margin: '0 auto', mb: 4 }}>
-                <Stepper activeStep={activeStep}>
-                    {steps.map((label) => (
+            <Box sx={{ width: '90%', mx: 'auto', mb: 4 }}>
+                <Stepper
+                    activeStep={activeStep}
+                    sx={{
+                        '& .MuiStepLabel-label': {
+                            fontSize: '1rem',
+                            fontWeight: 'bold',
+                        },
+                        '& .MuiStepIcon-root': {
+                            color: 'grey.400',
+                        },
+                        '& .Mui-active .MuiStepIcon-root': {
+                            color: 'primary.main',
+                        },
+                        '& .Mui-completed .MuiStepIcon-root': {
+                            color: 'success.main',
+                        },
+                    }}
+                >
+
+                {steps.map((label) => (
                         <Step key={label}>
                             <StepLabel>{label}</StepLabel>
                         </Step>
@@ -57,7 +83,7 @@ const SafetyForm: React.FC = () => {
                 </Stepper>
             </Box>
 
-            <Box sx={{ minHeight: '300px' }}>
+            <Box sx={{ minHeight: 300 }}>
                 {renderStepContent(activeStep)}
             </Box>
 
@@ -95,8 +121,9 @@ const SafetyForm: React.FC = () => {
                     </Button>
                 )}
             </Box>
-        </form>
+        </Box>
     );
+
 };
 
 export default SafetyForm;

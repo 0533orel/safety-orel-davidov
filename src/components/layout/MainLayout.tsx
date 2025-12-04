@@ -18,7 +18,7 @@ const MainLayout: React.FC = () => {
 
             <Container
                 component="main"
-                maxWidth={isEventsPage ? false : 'md'}
+                maxWidth={isEventsPage ? 'lg' : 'md'}
                 sx={{minHeight: '100%', mt: 4, mb: 4, flexGrow: 1}}
             >
                 <Box
