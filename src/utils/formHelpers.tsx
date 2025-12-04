@@ -22,3 +22,8 @@ export const checkIfHasCasualties = (resultValue: string): boolean => {
 export const checkEventVenue = (resultValue: string): boolean => {
     return resultValue.includes(CIVILIAN_AREA);
 };
+
+export const truncate = (text: string | undefined, max: number = 25) => {
+    if (!text) return '';
+    return text.length > max ? text.slice(0, max) + '...' : text;
+};

@@ -4,4 +4,5 @@ export interface SafetyContextType {
     events: SafetyEvent[];
     addEvent: (e: SafetyEvent) => void;
     clearEvents: () => void;
+    deleteEvent: (id: string) => void;
 }

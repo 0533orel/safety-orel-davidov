@@ -11,7 +11,7 @@ import {useSafetyEvents} from "../../context/safetyContext/useSafetyEvents.ts";
 
 
 const EventsTable: React.FC = () => {
-    const { events } = useSafetyEvents();
+    const { events, deleteEvent} = useSafetyEvents();
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedEvent, setSelectedEvent] = useState<SafetyEvent | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -40,6 +40,19 @@ const EventsTable: React.FC = () => {
         setIsDialogOpen(false);
     };
 
+    const handleDeleteEvent = (eventId: string) => {
+        const confirmDelete = window.confirm('האם אתה בטוח שברצונך למחוק את האירוע הזה?');
+        if (!confirmDelete) return;
+
+        deleteEvent(eventId);
+
+        if (selectedEvent && selectedEvent.id === eventId) {
+            setSelectedEvent(null);
+            setIsDialogOpen(false);
+        }
+    };
+
+
     if (events.length === 0) {
         return (
             <Box sx={{ textAlign: 'center', mt: 4, p: 3, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
@@ -62,11 +75,13 @@ const EventsTable: React.FC = () => {
                 <EventsListMobile
                     events={filteredEvents}
                     onViewDetails={handleOpenDetails}
+                    onDelete={handleDeleteEvent}
                 />
             ) : (
                 <EventsListDesktop
                     events={filteredEvents}
                     onViewDetails={handleOpenDetails}
+                    onDelete={handleDeleteEvent}
                 />
             )}
 
