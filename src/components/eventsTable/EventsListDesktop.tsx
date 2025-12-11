@@ -15,11 +15,15 @@ import {
     Box,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { truncate } from '../../utils/formHelpers';
-import type { EventsTableTypes } from './EventsTableTypes.ts';
-import { useSelectableEvents } from '../../hooks/useSelectableEvents';
+import {truncate} from '../../utils/formHelpers';
+import type {EventsTableTypes} from './EventsTableTypes.ts';
+import {useSelectTableEvents} from '../../hooks/useSelectTableEvents.ts';
+import EditIcon from '@mui/icons-material/Edit';
+import {useNavigate} from 'react-router-dom';
 
-const EventsListDesktop: React.FC<EventsTableTypes> = ({ events, onViewDetails, onDelete }) => {
+const EventsListDesktop: React.FC<EventsTableTypes> = ({events, onViewDetails, onDelete}) => {
+    const navigate = useNavigate()
+
     const {
         selectedIds,
         allSelected,
@@ -27,11 +31,11 @@ const EventsListDesktop: React.FC<EventsTableTypes> = ({ events, onViewDetails, 
         toggleSelectRow,
         toggleSelectAll,
         deleteSelected,
-    } = useSelectableEvents(events, onDelete);
+    } = useSelectTableEvents(events, onDelete);
 
     if (events.length === 0) {
         return (
-            <Typography align="center" color="text.secondary" sx={{ mt: 2 }}>
+            <Typography align="center" color="text.secondary" sx={{mt: 2}}>
                 לא נמצאו אירועים תואמים.
             </Typography>
         );
@@ -58,11 +62,11 @@ const EventsListDesktop: React.FC<EventsTableTypes> = ({ events, onViewDetails, 
                 </Button>
             </Box>
 
-            <TableContainer component={Paper} elevation={3} sx={{ borderRadius: 2 }}>
+            <TableContainer component={Paper} elevation={3} sx={{borderRadius: 2}}>
                 <Table
                     sx={{
                         minWidth: 900,
-                        '& th': { fontWeight: 'bold', bgcolor: 'primary.main', color: 'white' },
+                        '& th': {fontWeight: 'bold', bgcolor: 'primary.main', color: 'white'},
                         '& th, & td': {
                             textAlign: 'center',
                             border: '1px solid',
@@ -112,12 +116,26 @@ const EventsListDesktop: React.FC<EventsTableTypes> = ({ events, onViewDetails, 
                                             checked={isSelected}
                                             onChange={() => toggleSelectRow(event.id)}
                                         />
+                                        <Tooltip title={'ערוך אירוע'}>
+                                            <IconButton
+                                                color={'primary'}
+                                                onClick={() => navigate(`/edit-event/${event.id}`)}
+
+                                            >
+                                                <EditIcon></EditIcon>
+                                            </IconButton>
+                                        </Tooltip>
+
                                         <Tooltip title="מחק אירוע">
                                             <IconButton
-                                                sx={{ color: 'orangered' }}
-                                                onClick={() => onDelete(event.id)}
+                                                sx={{color: 'orangered'}}
+                                                onClick={() => {
+                                                    if (window.confirm(`למחוק אירוע מספר ${event.id}?`)) {
+                                                        onDelete(event.id);
+                                                    }
+                                                }}
                                             >
-                                                <DeleteIcon />
+                                                <DeleteIcon/>
                                             </IconButton>
                                         </Tooltip>
                                     </TableCell>

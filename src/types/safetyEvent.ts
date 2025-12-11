@@ -1,5 +1,5 @@
 export interface SafetyEvent {
-    id: string;
+    id: number;
     createdAt: number;
     unitName: string;
     description: string;
@@ -15,4 +15,7 @@ export interface SafetyEvent {
     eventSeverity: string;
     recommendations: string;
     coordinates?: string;
+    imagePath?: string;
+    image?: File | null;
+    deleteImage?: boolean;
 }

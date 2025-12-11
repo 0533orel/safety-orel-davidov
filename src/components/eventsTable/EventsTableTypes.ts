@@ -4,7 +4,7 @@ import type {SafetyEvent} from "../../types/safetyEvent.ts";
 export interface EventsTableTypes {
     events: SafetyEvent[];
     onViewDetails: (event: SafetyEvent) => void;
-    onDelete: (id: string) => void;
+    onDelete: (id: number) => void;
 }
 
 export interface EventDetailsDialogTypes {
@@ -20,10 +20,10 @@ export interface EventSearchTypes {
 
 
 export interface UseSelectableEventsResult {
-    selectedIds: string[];
+    selectedIds: number[];
     allSelected: boolean;
     someSelected: boolean;
-    toggleSelectRow: (id: string) => void;
+    toggleSelectRow: (id: number) => void;
     toggleSelectAll: () => void;
     deleteSelected: () => void;
 }

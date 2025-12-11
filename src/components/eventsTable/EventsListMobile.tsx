@@ -14,9 +14,14 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import { truncate } from '../../utils/formHelpers';
 import type { EventsTableTypes } from './EventsTableTypes.ts';
-import { useSelectableEvents } from '../../hooks/useSelectableEvents';
+import { useSelectTableEvents } from '../../hooks/useSelectTableEvents.ts';
+import EditIcon from '@mui/icons-material/Edit';
+import {useNavigate} from 'react-router-dom';
+
 
 const EventsListMobile: React.FC<EventsTableTypes> = ({ events, onViewDetails, onDelete }) => {
+    const navigate = useNavigate()
+
     const {
         selectedIds,
         allSelected,
@@ -24,7 +29,7 @@ const EventsListMobile: React.FC<EventsTableTypes> = ({ events, onViewDetails, o
         toggleSelectRow,
         toggleSelectAll,
         deleteSelected,
-    } = useSelectableEvents(events, onDelete);
+    } = useSelectTableEvents(events, onDelete);
 
     if (events.length === 0) {
         return (
@@ -69,16 +74,33 @@ const EventsListMobile: React.FC<EventsTableTypes> = ({ events, onViewDetails, o
                                 onChange={() => toggleSelectRow(event.id)}
                                 sx={{ position: 'absolute', top: 4, left: 4 }}
                             />
-
-                            <Tooltip title="מחק אירוע">
+                            <Tooltip title="ערוך אירוע">
                                 <IconButton
                                     sx={{
                                         position: 'absolute',
                                         top: 40,
                                         left: 4,
+                                        color: 'primary.main',
+                                    }}
+                                    onClick={() => navigate(`/edit-event/${event.id}`)}
+                                >
+                                    <EditIcon />
+                                </IconButton>
+                            </Tooltip>
+
+                            <Tooltip title="מחק אירוע">
+                                <IconButton
+                                    sx={{
+                                        position: 'absolute',
+                                        top: 80,
+                                        left: 4,
                                         color: 'darkred',
                                     }}
-                                    onClick={() => onDelete(event.id)}
+                                    onClick={() => {
+                                        if (window.confirm(`למחוק אירוע מספר ${event.id}?`)) {
+                                            onDelete(event.id);
+                                        }
+                                    }}
                                 >
                                     <DeleteIcon />
                                 </IconButton>

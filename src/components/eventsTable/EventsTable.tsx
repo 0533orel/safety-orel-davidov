@@ -40,10 +40,7 @@ const EventsTable: React.FC = () => {
         setIsDialogOpen(false);
     };
 
-    const handleDeleteEvent = (eventId: string) => {
-        const confirmDelete = window.confirm(`למחוק אירוע מספר ${eventId} ?`);
-        if (!confirmDelete) return;
-
+    const handleDeleteEvent = (eventId: number) => {
         deleteEvent(eventId);
 
         if (selectedEvent && selectedEvent.id === eventId) {

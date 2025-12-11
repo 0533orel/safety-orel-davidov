@@ -3,18 +3,18 @@ import type { SafetyEvent } from '../types/safetyEvent';
 import type {UseSelectableEventsResult} from "../components/eventsTable/EventsTableTypes.ts";
 
 
-export const useSelectableEvents = (
+export const useSelectTableEvents = (
     events: SafetyEvent[],
-    onDelete: (id: string) => void
+    onDelete: (id: number) => void
 ): UseSelectableEventsResult => {
-    const [selectedIds, setSelectedIds] = useState<string[]>([]);
+    const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
     const allIds = useMemo(() => events.map((e) => e.id), [events]);
 
     const allSelected = selectedIds.length === events.length;
     const someSelected = selectedIds.length > 0 && !allSelected;
 
-    const toggleSelectRow = (id: string) => {
+    const toggleSelectRow = (id: number) => {
         setSelectedIds((prev) =>
             prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
         );
