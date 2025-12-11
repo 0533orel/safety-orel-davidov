@@ -10,4 +10,5 @@ export interface StepProps {
     formData: SafetyEvent;
     handleChange: HandleChangeType;
     errors: ValidationErrors;
+    setFieldValue: (name: keyof SafetyEvent, value: unknown) => void;
 }

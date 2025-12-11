@@ -6,8 +6,11 @@ import {
 } from "../../../data/formOptions";
 import { checkIfHasCasualties } from "../../../utils/formHelpers";
 import { type StepProps } from "../../../types/formSteps";
+import { Button, Box, Typography, IconButton } from '@mui/material';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import DeleteIcon from "@mui/icons-material/Delete";
 
-const SummaryStep: React.FC<StepProps> = ({ formData, handleChange, errors }) => {
+const SummaryStep: React.FC<StepProps> = ({ formData, handleChange, errors, setFieldValue }) => {
     return (
         <>
             <FormInput
@@ -24,6 +27,56 @@ const SummaryStep: React.FC<StepProps> = ({ formData, handleChange, errors }) =>
                 helperText={errors.description}
                 required
             />
+
+            <Box sx={{ my: 2, border: '1px dashed grey', p: 2, borderRadius: 1, textAlign: 'center' }}>
+                <input
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    id="raised-button-file"
+                    type="file"
+                    name="image"
+                    onChange={handleChange}
+                />
+                <label htmlFor="raised-button-file">
+                    <Button variant="outlined" component="span" startIcon={<CloudUploadIcon />}>
+                        העלאת תמונה
+                    </Button>
+                </label>
+
+                {formData.image && (
+                    <Typography variant="body2" sx={{ mt: 1, color: 'success.main' }}>
+                        קובץ נבחר: {formData.image.name}
+                    </Typography>
+                )}
+
+                {!formData.image && formData.imagePath && (
+                    <Typography variant="body2" sx={{ mt: 1, color: 'text.secondary' }}>
+                        קיימת תמונה שמורה במערכת (העלאת קובץ חדש תחליף אותה)
+                    </Typography>
+                )}
+            </Box>
+
+            {!formData.image && formData.imagePath && (
+                <Box sx={{ mt: 2, position: 'relative', display: 'inline-block' }}>
+                    <img
+                        src={`http://localhost:3000/uploads/${formData.imagePath}`}
+                        alt="Preview"
+                        style={{ maxHeight: 100, borderRadius: 4 }}
+                    />
+                    <IconButton
+                        size="small"
+                        color="error"
+                        sx={{ position: 'absolute', top: -10, right: -10, bgcolor: 'background.paper' }}
+                        onClick={() => {
+                            setFieldValue('deleteImage', true);
+                            setFieldValue('imagePath', '');
+                        }}
+                    >
+                        <DeleteIcon fontSize="small" />
+                    </IconButton>
+                </Box>
+            )}
+
             <FormSelect
                 name="eventSeverity"
                 label="חומרת האירוע"

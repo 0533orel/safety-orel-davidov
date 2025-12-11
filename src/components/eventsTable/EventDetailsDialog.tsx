@@ -1,10 +1,11 @@
 import React from 'react';
 import {
     Dialog, DialogTitle, DialogContent, DialogActions,
-    Button, Stack, Typography
+    Button, Stack, Typography, Box
 } from '@mui/material';
 import type {EventDetailsDialogTypes} from "./EventsTableTypes.ts";
 
+const API_BASE = "http://localhost:3000";
 
 const EventDetailsDialog: React.FC<EventDetailsDialogTypes> = ({ open, onClose, event }) => {
     if (!event) return null;
@@ -14,6 +15,22 @@ const EventDetailsDialog: React.FC<EventDetailsDialogTypes> = ({ open, onClose, 
             <DialogTitle>פרטי האירוע #{event.id}</DialogTitle>
             <DialogContent dividers>
                 <Stack spacing={2}>
+                    {event.imagePath && (
+                        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+                            <Box
+                                component="img"
+                                src={`${API_BASE}/uploads/${event.imagePath}`}
+                                alt="תמונת אירוע"
+                                sx={{
+                                    maxWidth: '100%',
+                                    maxHeight: 400,
+                                    borderRadius: 2,
+                                    boxShadow: 2,
+                                    objectFit: 'contain'
+                                }}
+                            />
+                        </Box>
+                    )}
                     <Typography variant="body2">
                         <strong>תאריך דיווח למערכת:</strong> {new Date(event.createdAt).toLocaleString('he-IL')}
                     </Typography>

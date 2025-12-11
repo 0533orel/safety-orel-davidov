@@ -4,12 +4,17 @@ import { useSafetyForm } from "../../hooks/useSafetyForm";
 import BasicInfoStep from "./steps/BasicInfoStep";
 import ClassificationStep from "./steps/ClassificationStep";
 import SummaryStep from "./steps/SummaryStep";
-import { type StepProps } from "../../types/formSteps"; // <---
+import { type StepProps } from "../../types/formSteps";
+import type {SafetyEvent} from "../../types/safetyEvent.ts";
 
 const steps = ['פרטים בסיסיים', 'סיווג ונתונים', 'סיכום ותוצאות'];
 
-const SafetyForm: React.FC = () => {
-    const { formData, errors, handleChange, handleSubmit, validateStep } = useSafetyForm();
+interface SafetyFormProps {
+    initialData: SafetyEvent | undefined
+}
+
+const SafetyForm: React.FC<SafetyFormProps> = ({initialData}) => {
+    const { formData, errors, handleChange, handleSubmit, validateStep, setFieldValue } = useSafetyForm(initialData);
     const [activeStep, setActiveStep] = useState(0);
 
     const handleNext = () => {
@@ -31,7 +36,7 @@ const SafetyForm: React.FC = () => {
     };
 
     const renderStepContent = (step: number) => {
-        const stepProps: StepProps = { formData, handleChange, errors };
+        const stepProps: StepProps = { formData, handleChange, errors, setFieldValue };
 
         switch (step) {
             case 0: return <BasicInfoStep {...stepProps} />;
@@ -52,7 +57,7 @@ const SafetyForm: React.FC = () => {
                 component="h2"
                 sx={{ textAlign: 'center', mb: 4, fontFamily: 'Arial, sans-serif' }}
             >
-                דיווח אירוע בטיחות
+                {initialData? 'עריכת אירוע בטיחות' : 'דיווח אירוע בטיחות'}
             </Typography>
 
             <Box sx={{ width: '90%', mx: 'auto', mb: 4 }}>
@@ -108,7 +113,7 @@ const SafetyForm: React.FC = () => {
                         size="large"
                         type="button"
                     >
-                        שמור אירוע
+                        {initialData ? "עדכן אירוע" : "שמור אירוע"}
                     </Button>
                 ) : (
                     <Button
