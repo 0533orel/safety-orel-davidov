@@ -37,7 +37,7 @@ export const createFormData = (event: SafetyEvent & { deleteImage?: boolean }): 
         if (key === 'image' && value instanceof File) {
             formData.append('image', value);
         }
-        else if (value !== undefined && value !== null && key !== 'image') {
+        else if (value !== undefined && value !== null && key !== 'image' && key !== 'deleteImage' && key !== 'id' && key !== 'createdAt' && key !== 'imagePath') {
             formData.append(key, value.toString());
         }
     });
