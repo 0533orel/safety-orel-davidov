@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import type {EventDetailsDialogTypes} from "./EventsTableTypes.ts";
 
-const API_BASE = "http://localhost:3000";
+import { imageUrl } from "../../config/api";
 
 const EventDetailsDialog: React.FC<EventDetailsDialogTypes> = ({ open, onClose, event }) => {
     if (!event) return null;
@@ -19,7 +19,7 @@ const EventDetailsDialog: React.FC<EventDetailsDialogTypes> = ({ open, onClose, 
                         <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
                             <Box
                                 component="img"
-                                src={`${API_BASE}/uploads/${event.imagePath}`}
+                                src={imageUrl(event.imagePath)}
                                 alt="תמונת אירוע"
                                 sx={{
                                     maxWidth: '100%',

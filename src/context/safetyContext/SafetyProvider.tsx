@@ -3,7 +3,7 @@ import type {SafetyEvent} from "../../types/safetyEvent.ts";
 import {SafetyContext} from "./SafetyContext.ts";
 import {createFormData} from "../../utils/formHelpers.tsx";
 
-const API_URL = "http://localhost:3000/api/events"
+import { API_URL } from "../../config/api";
 
 export const SafetyProvider: React.FC<{ children: ReactNode }> = ({children}) => {
     const [events, setEvents] = useState<SafetyEvent[]>([]);

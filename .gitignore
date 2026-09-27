@@ -85,3 +85,7 @@ storybook-static/
 
 # Docker data
 docker-data/
+
+.env
+.env.local
+.env.*.local

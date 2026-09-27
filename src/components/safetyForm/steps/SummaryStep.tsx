@@ -1,3 +1,4 @@
+import { imageUrl } from "../../../config/api";
 import React from 'react';
 import FormInput from "../../common/FormInput";
 import FormSelect from "../../common/FormSelect";
@@ -30,7 +31,7 @@ const SummaryStep: React.FC<StepProps> = ({ formData, handleChange, errors, setF
 
             <Box sx={{ my: 2, border: '1px dashed grey', p: 2, borderRadius: 1, textAlign: 'center' }}>
                 <input
-                    accept="image/*"
+                    accept="image/png,image/jpeg,image/webp"
                     style={{ display: 'none' }}
                     id="raised-button-file"
                     type="file"
@@ -59,7 +60,7 @@ const SummaryStep: React.FC<StepProps> = ({ formData, handleChange, errors, setF
             {!formData.image && formData.imagePath && (
                 <Box sx={{ mt: 2, position: 'relative', display: 'inline-block' }}>
                     <img
-                        src={`http://localhost:3000/uploads/${formData.imagePath}`}
+                        src={imageUrl(formData.imagePath)}
                         alt="Preview"
                         style={{ maxHeight: 100, borderRadius: 4 }}
                     />

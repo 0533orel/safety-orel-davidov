@@ -18,7 +18,7 @@ const HomePage: React.FC = () => {
             </Box>
 
             <Grid container spacing={2} justifyContent={'center'}>
-                <Grid item xs={12} md={5}>
+                <Grid size={{ xs: 12, md: 5 }}>
                     <Card
                         sx={{
                             height: '100%',
@@ -49,7 +49,7 @@ const HomePage: React.FC = () => {
                     </Card>
                 </Grid>
 
-                <Grid item xs={12} md={5}>
+                <Grid size={{ xs: 12, md: 5 }}>
                     <Card
                         sx={{
                             height: '100%',
