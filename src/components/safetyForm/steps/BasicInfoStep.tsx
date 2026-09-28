@@ -40,7 +40,7 @@ const BasicInfoStep: React.FC<StepProps> = ({ formData, handleChange, errors }) 
                 />
 
                 <FormInput
-                    label="שעת האירוע"
+                    label="שעת האירוע (שעון ישראל)"
                     name="eventTime"
                     type="time"
                     value={formData.eventTime}

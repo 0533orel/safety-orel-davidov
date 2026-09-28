@@ -1,3 +1,4 @@
+import { eventClock } from "../contract/eventClock";
 import { type SafetyEvent } from "../types/safetyEvent";
 import { checkIfHasCasualties, checkEventVenue } from "./formHelpers";
 
@@ -21,8 +22,8 @@ export const validateSafetyFormStep = (step: number, formData: SafetyEvent): Val
             checkRequired("location", "נא לבחור מיקום");
 
             if (formData.eventDate && formData.eventTime) {
-                const selectedDateTime = new Date(`${formData.eventDate}T${formData.eventTime}`);
-                const now = new Date();
+                const selectedDateTime = `${formData.eventDate}T${formData.eventTime}`;
+                const now = eventClock();
 
                 if (selectedDateTime > now) {
                     newErrors.eventTime = "לא ניתן לדווח על שעה עתידית";
