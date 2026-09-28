@@ -1,78 +1,11 @@
-export const unitActivityTypeArr: string[] = [
-    'תע"ם',
-    "אימונים",
-    "הכשרה",
-    "רגיעה / מנהלה",
-    "מלחמה/מבצע צבאי נרחב",
-];
-
-export const personalActivityTypeArr: string[] = [
-    "פעילות מבצעית/לחימה",
-    "אימון",
-    "הכשרה",
-    "שגרה",
-    "פנאי",
-    "חופשה",
-];
-
-export const categoryArr: string[] = [
-    "נשק ומקלעים",
-    "דרכים",
-    "תחמושת",
-    `ירי דו"צ`,
-    "מזג-אוויר",
-    `רק"מ וצמ"ה קרביים`,
-    `שת"פ אוויר`,
-    "עבודה",
-    "אוויר",
-    "בטיחות ימי",
-    "ספורט ואקסטרים",
-    "נפילות/חבלות",
-    "חריגות ירי או תנועה של כוחות בשטחי אימונים",
-    `חומ"ס`,
-    `אמל"ח (לא נשק/מקלעים)`,
-    "אש",
-    `טג"ח קרבי`,
-    `שת"פ ים`,
-    "ייעודי עורף/חילוץ והצלה",
-    "אמצעי רום קרוב לקרקע",
-    "כושר גופני/קרבי",
-];
-
-export const locationArr: string[] = ["בסיס", "שטח אזרחי", "שטח אש", "רציף"];
-
-export const eventSeverityArr: string[] = ["קל", "בינוני", "חמור"];
-
-export const resultsArr: string[] = [
-    `א.נ.א.נ (אין נפגעים, אין נזק) `,
-    `א.נ.י.נ (אין נפגעים, יש נזק) `,
-    `י.נ.א.נ (יש נפגעים, אין נזק) `,
-    `י.נ.י.נ (יש נפגעים, יש נזק) `,
-];
-
-export const injuriesLevelArr: string[] = [
-    "ללא פגיעה",
-    "פגוע קל (ללא אשפוז)",
-    "פגוע קל (שאושפז)",
-    "פגוע בינוני",
-    "פגוע קשה/אנוש",
-    "חלל",
-];
-
-export const weatherArr: string[] = [
-    "שרב/עומס חום",
-    "שלג",
-    "סופת חול",
-    "גשם",
-    "ערפל",
-    "התקרחות",
-    "ברד",
-    "מעונן",
-    "נאה",
-    "רוח",
-    "ים סוער",
-    "מים שקטים",
-]
-
+import contract from "../contract/event-contract.json";
+export const unitActivityTypeArr: string[] = contract.enums.unitActivity;
+export const personalActivityTypeArr: string[] = contract.enums.personalActivity;
+export const categoryArr: string[] = contract.enums.category;
+export const locationArr: string[] = contract.enums.location;
+export const eventSeverityArr: string[] = contract.enums.eventSeverity;
+export const resultsArr: string[] = contract.enums.result;
+export const injuriesLevelArr: string[] = contract.enums.injurySeverity;
+export const weatherArr: string[] = contract.enums.weather;
 export const HAS_CASUALTIES = "יש נפגעים";
 export const CIVILIAN_AREA = "שטח אזרחי";

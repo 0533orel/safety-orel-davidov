@@ -1,4 +1,4 @@
-import React, {type ReactNode, useEffect, useState} from "react";
+import React, {type ReactNode, useEffect, useState, useRef} from "react";
 import type {SafetyEvent} from "../../types/safetyEvent.ts";
 import {SafetyContext} from "./SafetyContext.ts";
 import {createFormData} from "../../utils/formHelpers.tsx";
@@ -10,16 +10,20 @@ export const SafetyProvider: React.FC<{ children: ReactNode }> = ({children}) =>
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
 
+    const [nextCursor, setNextCursor] = useState<string | null>(null);
+    const fetching = useRef(false);
+
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                const response = await fetch(API_URL)
+                const response = await fetch(`${API_URL}?limit=50`)
                 if (!response.ok) {
                     throw new Error("Failed to fetch events")
                 }
                 const data = await response.json()
 
-                setEvents(data)
+                setEvents(data.items)
+                setNextCursor(data.nextCursor)
             } catch (err) {
                 console.error('Error loading events:', err)
                 setError("לא הצלחנו לטעון את האירועים מהשרת.");
@@ -30,6 +34,28 @@ export const SafetyProvider: React.FC<{ children: ReactNode }> = ({children}) =>
 
         fetchEvents()
     }, []);
+
+    const loadMore = async () => {
+        if (!nextCursor || fetching.current) return;
+        fetching.current = true;
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await fetch(`${API_URL}?limit=50&cursor=${encodeURIComponent(nextCursor)}`);
+            if (!response.ok) throw new Error('Failed to load page');
+            const data = await response.json();
+            setEvents(previous => {
+                const ids = new Set(previous.map(event => event.id));
+                return [...previous, ...data.items.filter((event: SafetyEvent) => !ids.has(event.id))];
+            });
+            setNextCursor(data.nextCursor);
+        } catch {
+            setError('לא הצלחנו לטעון אירועים נוספים. ניתן לנסות שוב.');
+        } finally {
+            fetching.current = false;
+            setLoading(false);
+        }
+    };
 
     const addEvent = async (newEvent: SafetyEvent): Promise<SafetyEvent> => {
         try {
@@ -108,7 +134,7 @@ export const SafetyProvider: React.FC<{ children: ReactNode }> = ({children}) =>
 
 
     return (
-        <SafetyContext.Provider value={{events, addEvent, updateEvent, deleteEvent, loading, error}}>
+        <SafetyContext.Provider value={{events, addEvent, updateEvent, deleteEvent, loading, error, loadMore, hasMore: nextCursor !== null}}>
             {children}
         </SafetyContext.Provider>
     )

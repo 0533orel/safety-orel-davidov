@@ -1,20 +1,9 @@
+import { eventClock } from "../contract/eventClock";
 import { CIVILIAN_AREA, HAS_CASUALTIES } from "../data/formOptions";
 import type {SafetyEvent} from "../types/safetyEvent.ts";
 
-export const getCurrentDate = () => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = (now.getMonth() + 1).toString().padStart(2, '0');
-    const day = now.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-};
-
-export const getCurrentTime = () => {
-    const now = new Date();
-    const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
-};
+export const getCurrentDate = () => eventClock().slice(0, 10);
+export const getCurrentTime = () => eventClock().slice(11);
 
 export const checkIfHasCasualties = (resultValue: string): boolean => {
     return resultValue.includes(HAS_CASUALTIES);
